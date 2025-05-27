@@ -1,0 +1,125 @@
+Название алгоритма: "КОТ" (Квантифицированная Оптимизация Тренировок) Дрессировка кошек.
+
+Цель: Достижение желаемого поведения (P_target) с максимальной вероятностью успеха (P_s -> max) при минимизации затрат ресурсов (времени T, угощений R_treats, терпения H_patience).
+
+Аксиомы и Постулаты:
+
+    Постулат кошачьей мотивации: Кошка действует в своих интересах. Любое действие (A_cat) направлено на максимизацию собственной выгоды (U_cat).
+    Закон положительного подкрепления: Вероятность повторения поведения увеличивается, если за ним следует желаемое последствие.
+    Принцип минимального усилия: Кошка выберет путь наименьшего сопротивления для достижения цели.
+    Теорема кошачьей непредсказуемости (Фактор КН): Существует ε > 0, представляющая случайный фактор в поведении кошки, который не может быть полностью устранен.
+
+Переменные и Определения:
+
+    B_target: Целевое поведение (например, "сидеть", "дай лапу", "не царапать мебель").
+    B_current: Текущее поведение кошки.
+    R_value(treat): Ценность конкретного угощения для кошки (шкала от 1 до 10). R_max – угощение с максимальной ценностью.
+    C_cue: Сигнал/команда для B_target (вербальный, жестовый).
+    T_session: Длительность тренировочной сессии (в минутах). T_optimal – оптимальная длительность.
+    P_s: Вероятность успешного выполнения B_target после C_cue.
+    K_cat: Коэффициент кошачьей индивидуальности (включает темперамент, обучаемость, упрямство). 0 < K_cat <= 1.
+    E_distraction: Уровень отвлекающих факторов в среде (шкала от 0 до 1).
+    M_marker: Маркер поведения (клик, короткое слово "Да!").
+    S_shaping_steps = {s_1, s_2, ..., s_n}: Последовательность шагов для формирования сложного B_target.
+
+Математическая Модель Успеха (упрощенная):
+
+P_s = f(R_value, K_cat, T_consistency, 1 / (1 + E_distraction), 1 / Complexity(B_target))
+где T_consistency – регулярность и последовательность тренировок.
+
+Алгоритм "КОТ":
+
+Фаза 0: Подготовка и Инициализация
+
+    Определение B_target:
+        DEFINE B_target (четко и однозначно).
+        DECOMPOSE B_target INTO S_shaping_steps IF Complexity(B_target) > Threshold_complexity.
+    Калибровка R_value:
+        FOR EACH treat_candidate IN Available_treats:
+            PRESENT treat_candidate TO cat.
+            RECORD cat_reaction_score.
+        SELECT R_max = treat WITH MAX(cat_reaction_score).
+    Выбор C_cue:
+        SELECT C_cue (короткий, ясный, уникальный).
+    Минимизация E_distraction:
+        CREATE training_environment WHERE E_distraction -> min.
+    Определение T_optimal:
+        INITIAL T_session = 3_minutes. (Наблюдать за признаками усталости/скуки кошки).
+
+Фаза 1: Обучение (Итеративный Цикл)
+
+LOOP WHILE P_s(B_target) < Desired_P_s_threshold (e.g., 0.85)
+
+1.  **Начало Сессии:**
+    *   `ENSURE cat_is_receptive (not sleepy, not overly playful, slightly hungry is optimal).`
+    *   `SET session_timer = T_session.`
+
+2.  **Итерация Обучения (для текущего шага `s_i` из `S_shaping_steps` или `B_target` если без шагов):**
+    *   `GET cat_attention.`
+    *   **(Опционально) LURING:** `USE R_max TO LURE cat INTO PERFORMING s_i.`
+    *   `IF cat_performs_approximation_of(s_i) OR s_i spontaneously:`
+        *   `IMMEDIATELY TRIGGER M_marker` (в течение 0.5-1 сек).
+        *   `IMMEDIATELY PROVIDE R_max` (в течение 1-2 сек после `M_marker`).
+        *   `INCREMENT success_count_for_s_i.`
+    *   `ELSE:`
+        *   `INCREMENT failure_count_for_s_i.`
+        *   `WAIT short_pause (e.g., 5-10 seconds).`
+        *   `CONSIDER SIMPLIFYING s_i OR INCREASING R_value (if possible).`
+    *   `DECREMENT session_timer.`
+
+3.  **Введение `C_cue` (когда `s_i` выполняется стабильно через LURING/CAPTURING):**
+    *   `PRESENT C_cue JUST BEFORE cat_is_likely_to_perform_s_i.`
+    *   `IF cat_performs_s_i AFTER C_cue:`
+        *   `M_marker + R_max.`
+    *   `GRADUALLY FADE lure.`
+
+4.  **Оценка Прогресса в Сессии:**
+    *   `CALCULATE P_s_session(s_i) = success_count_for_s_i / (success_count_for_s_i + failure_count_for_s_i).`
+    *   `IF P_s_session(s_i) > Threshold_step_mastery (e.g., 0.8):`
+        *   `MOVE TO s_i+1 (if shaping).`
+        *   `CONSIDER INCREASING criteria for s_i (e.g., duration, precision).`
+
+5.  **Конец Сессии:**
+    *   `IF session_timer <= 0 OR cat_shows_signs_of_disinterest (P_engagement < Threshold_engagement):`
+        *   `END session with a positive interaction (e.g. R_max for free, gentle petting).`
+        *   `BREAK inner loop (iteration training).`
+
+6.  **Межсессионный Анализ и Корректировка:**
+    *   `UPDATE overall_P_s(B_target).`
+    *   `ADJUST T_session, R_value, S_shaping_steps BASED ON performance_data AND K_cat observations.`
+    *   `IF P_s stagnates for N_stagnation_sessions:`
+        *   `RE-EVALUATE B_target complexity, R_max, E_distraction.`
+        *   `CONSULT feline_behavior_expert_subroutine (i.e., look for advice online/books).`
+
+END LOOP
+
+Фаза 2: Закрепление и Генерализация
+
+    Вариативное Подкрепление:
+        SWITCH R_max schedule FROM continuous TO variable_ratio (e.g., reward on average every 2-3 successes).
+        Это делает поведение более устойчивым к угасанию.
+    Генерализация:
+        PRACTICE B_target WITH C_cue in different_environments (incrementally increasing E_distraction).
+        PRACTICE B_target WITH C_cue at different_times_of_day.
+    Поддержание:
+        PERIODICALLY REINFORCE B_target with R_max on a lean variable_schedule.
+
+Функция Оптимизации (концептуально):
+
+Maximize: P_s(B_target)
+Subject to: T_total_training_time <= Max_T
+Minimize: Sum(R_treats_cost), Stress_level_cat, Stress_level_human
+
+Учет Фактора КН (Кошачьей Непредсказуемости):
+
+    Будьте готовы к тому, что ∀ algorithm, ∃ cat_instance FOR WHICH algorithm_performance < expected_performance.
+    Гибкость и адаптация важнее строгого следования шагам, если кошка явно демонстрирует неприятие или непонимание.
+    Золотое правило: Если кошка не в настроении, P_s -> 0. Не форсируйте. Лучше короткая, позитивная сессия, чем длинная и фрустрирующая.
+
+Математическая "совершенность" здесь заключается в:
+
+    Структурированном подходе: Разбиение задачи на управляемые компоненты.
+    Использовании обратной связи: Постоянная оценка P_s и корректировка параметров.
+    Оптимизации ресурсов: Поиск R_max, T_optimal.
+    Признании вероятностной природы: Понимание, что 100% успех не гарантирован, особенно с кошками.
+    Итеративности: Процесс обучения цикличен и требует уточнений.
